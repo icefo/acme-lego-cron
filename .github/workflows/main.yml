@@ -21,8 +21,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Fetch lego release version
+      id: lego_ver
+      run: |
+        echo "version=$(curl -sL https://api.github.com/repos/go-acme/lego/releases/latest | jq -r '.tag_name')" >> "$GITHUB_OUTPUT"
+
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
+          build-args: VERSION=${{ steps.lego_ver.outputs.version }}
           push: true
-          tags: ghcr.io/icefo/acme-lego-cron:latest
+          tags: |
+            ghcr.io/icefo/acme-lego-cron:latest
+            ghcr.io/icefo/acme-lego-cron:${{ steps.legover.outputs.version }}
