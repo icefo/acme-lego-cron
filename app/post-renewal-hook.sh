@@ -7,8 +7,8 @@ cp "$LEGO_CERT_KEY_PATH" /letsencrypt/certs/cert.key
 cp "$LEGO_CERT_PATH" /letsencrypt/certs/cert.crt
 
 # chown 1000 is for gitea because it refuses to run as root even in a container
-chmod --recursive 750 /letsencrypt/certs
-chown --recursive root:1000 /letsencrypt/certs
+chmod -R 750 /letsencrypt/certs
+chown -R root:1000 /letsencrypt/certs
 
 echo "Copied new certificate"
 
